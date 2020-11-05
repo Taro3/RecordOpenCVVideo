@@ -29,6 +29,12 @@ void MainWindow::on_pushButton_clicked()
 
     cv::VideoWriter vw((qApp->applicationDirPath() + "/video.avi").toStdString()
                        , cv::VideoWriter::fourcc('M', 'J', 'P', 'G'), fps, cv::Size(frame_width, frame_height));
+    // specify the bit rate using gstreamer.
+    // QString str = "appsrc ! videoconvert ! avenc_mpeg4 bitrate=5000000 ! mp4mux ! filesink location=%1/video.mp4";
+    // cv::VideoWriter vw(str.arg(qApp->applicationDirPath()).toStdString()
+    //                    , cv::VideoWriter::fourcc('m', 'p', '4', 'v'), fps, cv::Size(frame_width, frame_height));
+    vw.set(cv::VIDEOWRITER_PROP_QUALITY, 100);
+    qDebug() << vw.get(cv::VIDEOWRITER_PROP_QUALITY);
     while (true) {
         cv::Mat frame;
         vc >> frame;
